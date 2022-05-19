@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.1;netcoreapp3.1;net5.0;net6.0</TargetFrameworks>
+    <ApplicationIcon>assets\icon.ico</ApplicationIcon>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>Shelli.xml</DocumentationFile>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <Authors>Joel Christner</Authors>
+    <Description>Shelli is a simple static class to run things in your shell, tested on both Windows and Ubuntu.</Description>
+    <Copyright>(c)2022 Joel Christner</Copyright>
+    <PackageProjectUrl>https://github.com/jchristn/Shelli</PackageProjectUrl>
+    <PackageIcon>icon.png</PackageIcon>
+    <RepositoryUrl>https://github.com/jchristn/Shelli</RepositoryUrl>
+    <RepositoryType>github</RepositoryType>
+    <PackageTags>shell command prompt terminal</PackageTags>
+    <PackageReleaseNotes>Initial release</PackageReleaseNotes>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="assets\icon.ico">
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	</Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="assets\icon.png">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+	  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="Shelli.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  <Pack>True</Pack>
+	  <PackagePath>\</PackagePath>
+    </None>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Shelli</name>
+    </assembly>
+    <members>
+        <member name="T:HeyShelli.Shelli">
+            <summary>
+            Shell runner class.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.Shelli.OutputDataReceived">
+            <summary>
+            Action to invoke when data is received.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.Shelli.ErrorDataReceived">
+            <summary>
+            Action to invoke when error data is received.
+            </summary>
+        </member>
+        <member name="M:HeyShelli.Shelli.Go(System.String)">
+            <summary>
+            Execute a command.
+            </summary>
+            <param name="command">The command to execute.</param>
+            <returns>Integer.</returns>
+        </member>
+    </members>
+</doc>
