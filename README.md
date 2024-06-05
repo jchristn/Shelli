@@ -16,7 +16,11 @@ Want console output from the command that was executed?
 Shelli.OutputDataReceived = (s) => if (!String.IsNullOrEmpty(s)) Console.WriteLine(s);
 Shelli.ErrorDataReceived = (s) => if (!String.IsNullOrEmpty(s)) Console.WriteLine(s);
 ```
-
+Want to specify the shell used?
+```csharp
+Shelli.WindowsShell = "cmd.exe"; 
+Shelli.LinuxShell = "sh";
+```
 ## Need More Capabilities?
 
 The library is designed to be really light with not much configuration.  If you have an enhancement, please feel free to either 1) file an issue, 2) submit a PR, or 3) simply clone and use the code as you see fit (MIT license).

@@ -2,10 +2,12 @@
 
 ## Current Version
 
-v1.0.0
+v1.1.x
 
-- Initial release
+- Added `WindowsShell` (default: `cmd.exe`) and `LinuxShell` (default: `sh`) properties
 
 ## Previous Versions
 
-Notes from previous versions will be placed here.
+v1.0.0
+
+- Initial release

@@ -19,6 +19,16 @@
             Action to invoke when error data is received.
             </summary>
         </member>
+        <member name="P:HeyShelli.Shelli.WindowsShell">
+            <summary>
+            Windows shell command.  Defaults to 'cmd.exe'.  For certain commands and environments, it may be necessary to change this value.
+            </summary>
+        </member>
+        <member name="P:HeyShelli.Shelli.LinuxShell">
+            <summary>
+            Linux shell command.  Defaults to 'sh'.  For certain commands and environments, you may need to change this.  'bash' is a common alternative.
+            </summary>
+        </member>
         <member name="M:HeyShelli.Shelli.Go(System.String)">
             <summary>
             Execute a command.
