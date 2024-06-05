@@ -7,12 +7,14 @@ namespace Test
     {
         static void Main(string[] args)
         {
-            Shelli.OutputDataReceived = (s) =>
+            Shelli shell = new Shelli();
+
+            shell.OutputDataReceived = (s) =>
             {
                 if (!String.IsNullOrEmpty(s)) Console.WriteLine(s);
             };
 
-            Shelli.ErrorDataReceived = (s) =>
+            shell.ErrorDataReceived = (s) =>
             {
                 if (!String.IsNullOrEmpty(s)) Console.WriteLine("*** " + s);
             };
@@ -23,7 +25,7 @@ namespace Test
                 string userInput = Console.ReadLine();
                 if (String.IsNullOrEmpty(userInput)) continue;
                 if (userInput.Equals("q")) break;
-                int returnCode = Shelli.Go(userInput);
+                int returnCode = shell.Go(userInput);
                 Console.WriteLine("");
                 Console.WriteLine("Return code: " + returnCode);
             }

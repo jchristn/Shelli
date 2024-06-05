@@ -2,24 +2,27 @@
 
 # Shelli
 
-Shelli is a simple static class to run things in your shell, tested on both Windows and Ubuntu.
+Shelli is a simple class library to run things in your shell, tested on both Windows, Ubuntu, and Mac.
 
  [![NuGet Version](https://img.shields.io/nuget/v/Shelli.svg?style=flat)](https://www.nuget.org/packages/Shelli/) [![NuGet](https://img.shields.io/nuget/dt/Shelli.svg)](https://www.nuget.org/packages/Shelli) 
 
 ## Usage
 ```csharp
 using HeyShelli;
-int returnCode = Shelli.Go("dir /w");
+
+Shelli shell = new Shelli();
+
+int returnCode = shell.Go("dir /w");
 ```
 Want console output from the command that was executed?
 ```csharp
-Shelli.OutputDataReceived = (s) => if (!String.IsNullOrEmpty(s)) Console.WriteLine(s);
-Shelli.ErrorDataReceived = (s) => if (!String.IsNullOrEmpty(s)) Console.WriteLine(s);
+shell.OutputDataReceived = (s) => if (!String.IsNullOrEmpty(s)) Console.WriteLine(s);
+shell.ErrorDataReceived = (s) => if (!String.IsNullOrEmpty(s)) Console.WriteLine(s);
 ```
 Want to specify the shell used?
 ```csharp
-Shelli.WindowsShell = "cmd.exe"; 
-Shelli.LinuxShell = "sh";
+shell.WindowsShell = "cmd.exe"; 
+shell.LinuxShell = "sh";
 ```
 ## Need More Capabilities?
 

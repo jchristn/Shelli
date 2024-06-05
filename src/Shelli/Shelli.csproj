@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.1;net6.0;net7.0;net8.0</TargetFrameworks>
-		<Version>1.1.2</Version>
+		<Version>2.0.0</Version>
 		<ApplicationIcon>assets\icon.ico</ApplicationIcon>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>Shelli.xml</DocumentationFile>
@@ -15,7 +15,7 @@
 		<RepositoryUrl>https://github.com/jchristn/Shelli</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
 		<PackageTags>shell command prompt terminal</PackageTags>
-		<PackageReleaseNotes>Added linux shell property</PackageReleaseNotes>
+		<PackageReleaseNotes>Migrate away from static class</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<IncludeSymbols>True</IncludeSymbols>

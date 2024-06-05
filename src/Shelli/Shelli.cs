@@ -10,24 +10,24 @@ namespace HeyShelli
     /// <summary>
     /// Shell runner class.
     /// </summary>
-    public static class Shelli
+    public class Shelli
     {
         #region Public-Members
 
         /// <summary>
         /// Action to invoke when data is received.
         /// </summary>
-        public static Action<string> OutputDataReceived = null;
+        public Action<string> OutputDataReceived = null;
 
         /// <summary>
         /// Action to invoke when error data is received.
         /// </summary>
-        public static Action<string> ErrorDataReceived = null;
+        public Action<string> ErrorDataReceived = null;
 
         /// <summary>
         /// Windows shell command.  Defaults to 'cmd.exe'.  For certain commands and environments, it may be necessary to change this value.
         /// </summary>
-        public static string WindowsShell
+        public string WindowsShell
         {
             get
             {
@@ -43,7 +43,7 @@ namespace HeyShelli
         /// <summary>
         /// Linux shell command.  Defaults to 'sh'.  For certain commands and environments, you may need to change this.  'bash' is a common alternative.
         /// </summary>
-        public static string LinuxShell
+        public string LinuxShell
         {
             get
             {
@@ -60,8 +60,8 @@ namespace HeyShelli
 
         #region Private-Members
 
-        private static string _WindowsShell = "cmd.exe";
-        private static string _LinuxShell = "sh";
+        private string _WindowsShell = "cmd.exe";
+        private string _LinuxShell = "sh";
 
         #endregion
 
@@ -72,7 +72,7 @@ namespace HeyShelli
         /// </summary>
         /// <param name="command">The command to execute.</param>
         /// <returns>Integer.</returns>
-        public static int Go(string command)
+        public int Go(string command)
         {
             if (String.IsNullOrEmpty(command)) throw new ArgumentNullException(nameof(command));
             
