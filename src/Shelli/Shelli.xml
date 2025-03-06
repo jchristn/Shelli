@@ -36,5 +36,16 @@
             <param name="command">The command to execute.</param>
             <returns>Integer.</returns>
         </member>
+        <member name="M:HeyShelli.Shelli.Dispose(System.Boolean)">
+            <summary>
+            Dispose.
+            </summary>
+            <param name="disposing">Disposing.</param>
+        </member>
+        <member name="M:HeyShelli.Shelli.Dispose">
+            <summary>
+            Dispose.
+            </summary>
+        </member>
     </members>
 </doc>

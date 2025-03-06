@@ -10,7 +10,7 @@ namespace HeyShelli
     /// <summary>
     /// Shell runner class.
     /// </summary>
-    public class Shelli
+    public class Shelli : IDisposable
     {
         #region Public-Members
 
@@ -62,6 +62,7 @@ namespace HeyShelli
 
         private string _WindowsShell = "cmd.exe";
         private string _LinuxShell = "sh";
+        private bool _Disposed = false;
 
         #endregion
 
@@ -112,6 +113,33 @@ namespace HeyShelli
 
             p.WaitForExit();
             return p.ExitCode;
+        }
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        /// <param name="disposing">Disposing.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_Disposed)
+            {
+                if (disposing)
+                {
+                    OutputDataReceived = null;
+                    ErrorDataReceived = null;
+                }
+
+                _Disposed = true;
+            }
+        }
+
+        /// <summary>
+        /// Dispose.
+        /// </summary>
+        public void Dispose()
+        {
+            Dispose(disposing: true);
+            GC.SuppressFinalize(this);
         }
 
         #endregion
