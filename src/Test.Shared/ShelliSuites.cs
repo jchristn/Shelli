@@ -328,6 +328,31 @@ namespace Test.Shared
 
                     new TestCaseDescriptor(
                         suiteId: "Execution",
+                        caseId: "SuccessfulCommandProducesNoStdErr",
+                        displayName: "A stdout-only command leaves the error stream empty",
+                        executeAsync: ct =>
+                        {
+                            RunResult result = Run(EchoCommand("shelli_stdout_only"));
+                            AssertEqual(0, result.ExitCode);
+                            AssertContains(result.StdOut, "shelli_stdout_only");
+                            AssertEmpty(result.StdErr, nameof(result.StdErr));
+                            return Task.CompletedTask;
+                        }),
+
+                    new TestCaseDescriptor(
+                        suiteId: "Execution",
+                        caseId: "StdErrCommandProducesNoStdOut",
+                        displayName: "A stderr-only command leaves the output stream empty",
+                        executeAsync: ct =>
+                        {
+                            RunResult result = Run(EchoToStdErrCommand("shelli_stderr_only"));
+                            AssertContains(result.StdErr, "shelli_stderr_only");
+                            AssertEmpty(result.StdOut, nameof(result.StdOut));
+                            return Task.CompletedTask;
+                        }),
+
+                    new TestCaseDescriptor(
+                        suiteId: "Execution",
                         caseId: "ExplicitZeroExit",
                         displayName: "'exit 0' yields exit code 0",
                         executeAsync: ct =>
@@ -610,6 +635,13 @@ namespace Test.Shared
             if (haystack == null || haystack.IndexOf(needle, StringComparison.Ordinal) < 0)
                 throw new InvalidOperationException(
                     "Expected output to contain '" + needle + "' but it was: '" + (haystack ?? "<null>").Trim() + "'");
+        }
+
+        private static void AssertEmpty(string value, string name)
+        {
+            if (!String.IsNullOrWhiteSpace(value))
+                throw new InvalidOperationException(
+                    "Expected '" + name + "' to be empty but it was: '" + value.Trim() + "'");
         }
 
         private static void AssertThrows<TException>(Action action)

@@ -2,20 +2,20 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
-		<Version>2.0.1</Version>
+		<Version>2.1.0</Version>
 		<ApplicationIcon>assets\icon.ico</ApplicationIcon>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>Shelli.xml</DocumentationFile>
 		<GeneratePackageOnBuild>True</GeneratePackageOnBuild>
 		<Authors>Joel Christner</Authors>
 		<Description>Shelli is a simple static class to run things in your shell, tested on both Windows and Ubuntu.</Description>
-		<Copyright>(c)2024 Joel Christner</Copyright>
+		<Copyright>(c)2026 Joel Christner</Copyright>
 		<PackageProjectUrl>https://github.com/jchristn/Shelli</PackageProjectUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<RepositoryUrl>https://github.com/jchristn/Shelli</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
 		<PackageTags>shell command prompt terminal</PackageTags>
-		<PackageReleaseNotes>Migrate away from static class</PackageReleaseNotes>
+		<PackageReleaseNotes>Dependency updates</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<IncludeSymbols>True</IncludeSymbols>
@@ -52,7 +52,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="System.Text.Encoding.CodePages" Version="7.0.0" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.11" />
 	</ItemGroup>
 
 </Project>
