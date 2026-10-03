@@ -39,6 +39,10 @@ See [TELEMETRY.md](https://github.com/jchristn/Shelli/blob/main/TELEMETRY.md) fo
 
 The library is designed to be really light with not much configuration.  If you have an enhancement, please feel free to either 1) file an issue, 2) submit a PR, or 3) simply clone and use the code as you see fit (MIT license).
 
+## Version History
+
+Please refer to [CHANGELOG.md](https://github.com/jchristn/Shelli/blob/main/CHANGELOG.md) for version history.
+
 ## Special Thanks
 
 Thanks to the authors that provided the free logo found here: https://www.clipartmax.com/middle/m2i8d3G6m2b1b1b1_conch-shell-free-icon-conch-icon/

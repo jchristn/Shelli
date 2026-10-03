@@ -462,6 +462,24 @@ namespace Test.Shared
 
                     new TestCaseDescriptor(
                         suiteId: "Execution",
+                        caseId: "Utf8OutputDecoded",
+                        displayName: "Non-ASCII UTF-8 output is decoded correctly",
+                        executeAsync: ct =>
+                        {
+                            // POSIX: emit the UTF-8 bytes for "héllo_üñï" via octal escapes so the
+                            // command text itself stays ASCII. Windows: switch the console to code page 65001 first.
+                            string command = _IsWindows
+                                ? "chcp 65001 >nul && echo héllo_üñï"
+                                : "printf 'h\\303\\251llo_\\303\\274\\303\\261\\303\\257\\n'";
+
+                            RunResult result = Run(command);
+                            AssertEqual(0, result.ExitCode);
+                            AssertContains(result.StdOut, "héllo_üñï");
+                            return Task.CompletedTask;
+                        }),
+
+                    new TestCaseDescriptor(
+                        suiteId: "Execution",
                         caseId: "PaginationPlaceholder",
                         displayName: "Placeholder for future streaming API",
                         skip: true,
