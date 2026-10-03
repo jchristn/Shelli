@@ -33,7 +33,8 @@ namespace Test.Shared
                     PropertiesSuite(),
                     ArgumentValidationSuite(),
                     ExecutionSuite(),
-                    DisposeSuite()
+                    DisposeSuite(),
+                    ShelliTelemetrySuite.Suite()
                 };
             }
         }

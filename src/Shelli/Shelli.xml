@@ -7,6 +7,9 @@
         <member name="T:HeyShelli.Shelli">
             <summary>
             Shell runner class.
+            Each call to <see cref="M:HeyShelli.Shelli.Go(System.String)"/> emits a span on the <see cref="F:HeyShelli.ShelliTelemetryNames.ActivitySourceName"/> activity source
+            and metrics on the <see cref="F:HeyShelli.ShelliTelemetryNames.MeterName"/> meter; see TELEMETRY.md.
+            Instances are not thread-safe for concurrent configuration changes; concurrent calls to Go on separate instances are safe.
             </summary>
         </member>
         <member name="F:HeyShelli.Shelli.OutputDataReceived">
@@ -29,12 +32,21 @@
             Linux shell command.  Defaults to 'sh'.  For certain commands and environments, you may need to change this.  'bash' is a common alternative.
             </summary>
         </member>
+        <member name="P:HeyShelli.Shelli.PropagateTraceContext">
+            <summary>
+            When true (default), and a trace is active, the W3C trace context of the execution span is passed to the child process
+            through the TRACEPARENT and TRACESTATE environment variables so OpenTelemetry-aware children join the same trace.
+            When false, the child environment is left untouched.
+            </summary>
+        </member>
         <member name="M:HeyShelli.Shelli.Go(System.String)">
             <summary>
-            Execute a command.
+            Execute a command and block until it exits.
             </summary>
             <param name="command">The command to execute.</param>
-            <returns>Integer.</returns>
+            <returns>The exit code of the shell process.</returns>
+            <exception cref="T:System.ArgumentNullException">Thrown when command is null or empty.</exception>
+            <exception cref="T:System.ComponentModel.Win32Exception">Thrown when the configured shell cannot be started.</exception>
         </member>
         <member name="M:HeyShelli.Shelli.Dispose(System.Boolean)">
             <summary>
@@ -45,6 +57,186 @@
         <member name="M:HeyShelli.Shelli.Dispose">
             <summary>
             Dispose.
+            </summary>
+        </member>
+        <member name="T:HeyShelli.ShelliTelemetry">
+            <summary>
+            Process-wide Shelli meter, activity source, and instruments.
+            Every method is best-effort: a failure inside a listener never propagates to the caller.
+            </summary>
+        </member>
+        <member name="T:HeyShelli.ShelliTelemetryNames">
+            <summary>
+            Stable public names for every telemetry point Shelli emits.
+            These names are a public contract consumed by collectors and dashboards; they do not change within a major version.
+            Shelli emits through <see cref="T:System.Diagnostics.Metrics.Meter"/> and <see cref="T:System.Diagnostics.ActivitySource"/> only,
+            takes no exporter dependency, and costs effectively nothing until a listener subscribes to <see cref="F:HeyShelli.ShelliTelemetryNames.MeterName"/> or <see cref="F:HeyShelli.ShelliTelemetryNames.ActivitySourceName"/>.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.MeterName">
+            <summary>
+            Name of the <see cref="T:System.Diagnostics.Metrics.Meter"/> that carries every Shelli metric.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.ActivitySourceName">
+            <summary>
+            Name of the <see cref="T:System.Diagnostics.ActivitySource"/> that carries every Shelli span.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.CommandDuration">
+            <summary>
+            Histogram (seconds): end-to-end duration of one command execution, from process creation through exit.
+            Labels: process.executable.name, shelli.outcome, error.type (only when shelli.outcome is 'error').
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.CommandExecutions">
+            <summary>
+            Counter ({command}): completed command executions.
+            Labels: process.executable.name, shelli.outcome, error.type (only when shelli.outcome is 'error').
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.CommandActive">
+            <summary>
+            UpDownCounter ({command}): commands currently executing (in-flight subprocesses).
+            Labels: process.executable.name.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.StageDuration">
+            <summary>
+            Histogram (seconds): duration of each execution stage ('start' is process creation, 'wait' is runtime until exit).
+            Labels: process.executable.name, shelli.stage, shelli.outcome ('success' or 'error').
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.OutputLines">
+            <summary>
+            Counter ({line}): lines read from the child process output streams.
+            Labels: process.executable.name, shelli.stream ('stdout' or 'stderr').
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.LibraryInfo">
+            <summary>
+            Observable gauge ({info}): constant 1, labeled with the Shelli library version, for build-info joins.
+            Labels: shelli.version.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.ExecSpan">
+            <summary>
+            Span name for one command execution.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.StageStartSpan">
+            <summary>
+            Span name for the process creation stage.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.StageWaitSpan">
+            <summary>
+            Span name for the stage that waits for the process to exit.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeExecutableName">
+            <summary>
+            Attribute: file name of the shell executable (for example 'sh', 'bash', 'cmd.exe'). Never the full command line.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeOutcome">
+            <summary>
+            Attribute: execution outcome. One of <see cref="F:HeyShelli.ShelliTelemetryNames.OutcomeSuccess"/>, <see cref="F:HeyShelli.ShelliTelemetryNames.OutcomeNonZeroExit"/>, <see cref="F:HeyShelli.ShelliTelemetryNames.OutcomeError"/>.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeErrorType">
+            <summary>
+            Attribute: full type name of the exception that caused an 'error' outcome.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeStage">
+            <summary>
+            Attribute: stage name. One of <see cref="F:HeyShelli.ShelliTelemetryNames.StageStart"/>, <see cref="F:HeyShelli.ShelliTelemetryNames.StageWait"/>.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeStream">
+            <summary>
+            Attribute: output stream. One of <see cref="F:HeyShelli.ShelliTelemetryNames.StreamStdout"/>, <see cref="F:HeyShelli.ShelliTelemetryNames.StreamStderr"/>.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeVersion">
+            <summary>
+            Attribute: Shelli library version.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributePid">
+            <summary>
+            Span attribute: child process id.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeExitCode">
+            <summary>
+            Span attribute: child process exit code.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeCommandLength">
+            <summary>
+            Span attribute: length in characters of the command text. The command text itself is never recorded because it may contain secrets.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeContextPropagated">
+            <summary>
+            Span attribute: whether W3C trace context was handed to the child process through the TRACEPARENT environment variable.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeStdoutLines">
+            <summary>
+            Span attribute: number of stdout lines read.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.AttributeStderrLines">
+            <summary>
+            Span attribute: number of stderr lines read.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.OutcomeSuccess">
+            <summary>
+            Outcome: the process exited with code 0.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.OutcomeNonZeroExit">
+            <summary>
+            Outcome: the process ran and exited with a non-zero code.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.OutcomeError">
+            <summary>
+            Outcome: an exception was thrown (for example the shell executable could not be started).
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.StageStart">
+            <summary>
+            Stage: process creation.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.StageWait">
+            <summary>
+            Stage: waiting for the process to exit.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.StreamStdout">
+            <summary>
+            Stream: standard output.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.StreamStderr">
+            <summary>
+            Stream: standard error.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.TraceParentEnvironmentVariable">
+            <summary>
+            Environment variable that carries the W3C traceparent to the child process.
+            </summary>
+        </member>
+        <member name="F:HeyShelli.ShelliTelemetryNames.TraceStateEnvironmentVariable">
+            <summary>
+            Environment variable that carries the W3C tracestate to the child process.
             </summary>
         </member>
     </members>

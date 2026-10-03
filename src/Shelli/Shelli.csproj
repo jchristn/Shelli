@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
-		<Version>2.1.0</Version>
+		<Version>2.2.0</Version>
 		<ApplicationIcon>assets\icon.ico</ApplicationIcon>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>Shelli.xml</DocumentationFile>
@@ -14,8 +14,8 @@
 		<PackageIcon>icon.png</PackageIcon>
 		<RepositoryUrl>https://github.com/jchristn/Shelli</RepositoryUrl>
 		<RepositoryType>github</RepositoryType>
-		<PackageTags>shell command prompt terminal</PackageTags>
-		<PackageReleaseNotes>Dependency updates</PackageReleaseNotes>
+		<PackageTags>shell command prompt terminal opentelemetry telemetry</PackageTags>
+		<PackageReleaseNotes>Built-in OpenTelemetry-compatible metrics and traces (Meter and ActivitySource named Shelli); W3C trace context propagation to child processes</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<IncludeSymbols>True</IncludeSymbols>
@@ -53,6 +53,10 @@
 
 	<ItemGroup>
 		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.11" />
+	</ItemGroup>
+
+	<ItemGroup Condition="'$(TargetFramework)' == 'netstandard2.0' Or '$(TargetFramework)' == 'netstandard2.1'">
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="10.0.12" />
 	</ItemGroup>
 
 </Project>
