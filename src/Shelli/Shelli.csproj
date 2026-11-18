@@ -2,7 +2,7 @@
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1;net8.0</TargetFrameworks>
-		<Version>2.2.1</Version>
+		<Version>2.2.2</Version>
 		<ApplicationIcon>assets\icon.ico</ApplicationIcon>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<DocumentationFile>Shelli.xml</DocumentationFile>
@@ -13,13 +13,16 @@
 		<PackageProjectUrl>https://github.com/jchristn/Shelli</PackageProjectUrl>
 		<PackageIcon>icon.png</PackageIcon>
 		<RepositoryUrl>https://github.com/jchristn/Shelli</RepositoryUrl>
-		<RepositoryType>github</RepositoryType>
+		<RepositoryType>git</RepositoryType>
 		<PackageTags>shell command prompt terminal opentelemetry telemetry</PackageTags>
 		<PackageReleaseNotes>Dependency updates (System.Text.Encoding.CodePages 10.0.12)</PackageReleaseNotes>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<PackageLicenseFile>LICENSE.md</PackageLicenseFile>
 		<IncludeSymbols>True</IncludeSymbols>
 		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<PublishRepositoryUrl>true</PublishRepositoryUrl>
+		<EmbedUntrackedSources>true</EmbedUntrackedSources>
+		<ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
 	</PropertyGroup>
 
 	<ItemGroup>
